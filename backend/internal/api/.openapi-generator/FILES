@@ -1,0 +1,15 @@
+.openapi-generator-ignore
+README.md
+api/openapi.yaml
+go/api.go
+go/api_ledger.go
+go/api_ledger_service.go
+go/error.go
+go/helpers.go
+go/impl.go
+go/logger.go
+go/model_expense.go
+go/model_expense_response.go
+go/model_income.go
+go/model_income_response.go
+go/routers.go

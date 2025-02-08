@@ -1,0 +1,8 @@
+name: incomeId
+in: path
+description: The id of the income line
+required: true
+schema:
+  type: string
+  format: guid
+  example: "53240c09-79c3-4601-a625-10b4e0715a8d"

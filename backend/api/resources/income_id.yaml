@@ -1,0 +1,47 @@
+put:
+  tags:
+    - ledger
+  summary: Update a line of income
+  description: Updates a line of income in the ledger
+  operationId: updateIncome
+  parameters:
+    - $ref: '../parameters/incomeId.yaml'
+    - $ref: '../parameters/month.yaml'
+  requestBody:
+    description: Update a line of income in the ledger
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/Income.yaml'
+    required: true
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '../responseBodies/IncomeResponse.yaml'
+    '400':
+      description: Invalid ID supplied
+    '404':
+      description: Income line not found
+delete:
+  tags:
+    - ledger
+  summary: Delete a line of income
+  description: Deletes a line of income from the ledger
+  operationId: deleteIncome
+  parameters:
+    - $ref: '../parameters/incomeId.yaml'
+    - $ref: '../parameters/month.yaml'
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '../responseBodies/IncomeResponse.yaml'
+    '400':
+      description: Invalid input
+    '404':
+      description: Income line not found

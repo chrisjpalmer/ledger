@@ -1,0 +1,22 @@
+required:
+  - name
+  - amount
+  - date
+  - received
+type: object
+properties:
+  name:
+    type: string
+    example: Salary
+  amount:
+   type: number
+   format: float
+   example: 10.33
+   minimum: 0
+  date:
+    type: string
+    format: date
+    example: 2024-12-01
+  received:
+    type: boolean
+    example: true

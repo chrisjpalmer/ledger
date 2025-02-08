@@ -1,0 +1,47 @@
+put:
+  tags:
+    - ledger
+  summary: Update an expense line
+  description: Updates an expense line in the ledger
+  operationId: updateExpense
+  parameters:
+    - $ref: '../parameters/expenseId.yaml'
+    - $ref: '../parameters/month.yaml'
+  requestBody:
+    description: Update an expense line in the ledger
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/Expense.yaml'
+    required: true
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '../responseBodies/ExpenseResponse.yaml'
+    '400':
+      description: Invalid ID supplied
+    '404':
+      description: Expense line not found
+delete:
+  tags:
+    - ledger
+  summary: Delete an expense line
+  description: Deletes an expense line from the ledger
+  operationId: deleteExpense
+  parameters:
+    - $ref: '../parameters/expenseId.yaml'
+    - $ref: '../parameters/month.yaml'
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '../responseBodies/ExpenseResponse.yaml'
+    '400':
+      description: Invalid input
+    '404':
+      description: Expense line not found

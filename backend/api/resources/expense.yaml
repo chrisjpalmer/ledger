@@ -1,0 +1,26 @@
+post:
+  tags:
+    - ledger
+  summary: Add a new expense line
+  description: Adds a new expense line to the ledger.
+  operationId: addExpense
+  parameters:
+    - $ref: '../parameters/month.yaml'
+  requestBody:
+    description: Add a new expense line to the ledger
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/Expense.yaml'
+    required: true
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '../responseBodies/ExpenseResponse.yaml'
+    '400':
+      description: Invalid ID supplied
+    '404':
+      description: Pet not found

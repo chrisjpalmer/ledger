@@ -1,0 +1,24 @@
+openapi: 3.0.3
+info:
+  title: Ledger API
+  description: |-
+    This is the API for the ledger backend.
+  version: 0.0.1
+tags:
+  - name: ledger
+    description: Main API routes concerning the ledger
+paths:
+  /month/{month}/income:
+    $ref: './resources/income.yaml'
+  /month/{month}/income/{incomeId}:
+    $ref: './resources/income_id.yaml'
+  /month/{month}/expense:
+    $ref: './resources/expense.yaml'
+  /month/{month}/expense_id:
+    $ref: './resources/expense_id.yaml'
+components:
+  schemas:
+    Income:
+      $ref: './schemas/Income.yaml'
+    Expense:
+      $ref: './schemas/Expense.yaml'

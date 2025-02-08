@@ -1,0 +1,22 @@
+required:
+  - name
+  - amount
+  - date
+  - paid
+type: object
+properties:
+  name:
+    type: string
+    example: Christmas Lunch
+  amount:
+   type: number
+   format: float
+   example: 2.34
+   minimum: 0
+  date:
+    type: string
+    format: date
+    example: 2024-12-01
+  paid:
+    type: boolean
+    example: true

@@ -1,0 +1,337 @@
+openapi: 3.0.3
+info:
+  description: This is the API for the ledger backend.
+  title: Ledger API
+  version: 0.0.1
+servers:
+- url: /
+tags:
+- description: Main API routes concerning the ledger
+  name: ledger
+paths:
+  /month/{month}/income:
+    post:
+      description: Adds a new line of income to the ledger.
+      operationId: addIncome
+      parameters:
+      - description: The id of the income line
+        in: path
+        name: month
+        required: true
+        schema:
+          example: 2024-12-01
+          format: date
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Income'
+        description: Add a new line of income to the ledger
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncomeResponse'
+          description: Successful operation
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Pet not found
+      summary: Add a new line of income
+      tags:
+      - ledger
+  /month/{month}/income/{incomeId}:
+    delete:
+      description: Deletes a line of income from the ledger
+      operationId: deleteIncome
+      parameters:
+      - description: The id of the income line
+        in: path
+        name: incomeId
+        required: true
+        schema:
+          example: 53240c09-79c3-4601-a625-10b4e0715a8d
+          format: guid
+          type: string
+      - description: The id of the income line
+        in: path
+        name: month
+        required: true
+        schema:
+          example: 2024-12-01
+          format: date
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncomeResponse'
+          description: Successful operation
+        "400":
+          description: Invalid input
+        "404":
+          description: Income line not found
+      summary: Delete a line of income
+      tags:
+      - ledger
+    put:
+      description: Updates a line of income in the ledger
+      operationId: updateIncome
+      parameters:
+      - description: The id of the income line
+        in: path
+        name: incomeId
+        required: true
+        schema:
+          example: 53240c09-79c3-4601-a625-10b4e0715a8d
+          format: guid
+          type: string
+      - description: The id of the income line
+        in: path
+        name: month
+        required: true
+        schema:
+          example: 2024-12-01
+          format: date
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Income'
+        description: Update a line of income in the ledger
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncomeResponse'
+          description: Successful operation
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Income line not found
+      summary: Update a line of income
+      tags:
+      - ledger
+  /month/{month}/expense:
+    post:
+      description: Adds a new expense line to the ledger.
+      operationId: addExpense
+      parameters:
+      - description: The id of the income line
+        in: path
+        name: month
+        required: true
+        schema:
+          example: 2024-12-01
+          format: date
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expense'
+        description: Add a new expense line to the ledger
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpenseResponse'
+          description: Successful operation
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Pet not found
+      summary: Add a new expense line
+      tags:
+      - ledger
+  /month/{month}/expense_id:
+    delete:
+      description: Deletes an expense line from the ledger
+      operationId: deleteExpense
+      parameters:
+      - description: The id of the expense line
+        in: path
+        name: expenseId
+        required: true
+        schema:
+          example: 53240c09-79c3-4601-a625-10b4e0715a8d
+          format: guid
+          type: string
+      - description: The id of the income line
+        in: path
+        name: month
+        required: true
+        schema:
+          example: 2024-12-01
+          format: date
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpenseResponse'
+          description: Successful operation
+        "400":
+          description: Invalid input
+        "404":
+          description: Expense line not found
+      summary: Delete an expense line
+      tags:
+      - ledger
+    put:
+      description: Updates an expense line in the ledger
+      operationId: updateExpense
+      parameters:
+      - description: The id of the expense line
+        in: path
+        name: expenseId
+        required: true
+        schema:
+          example: 53240c09-79c3-4601-a625-10b4e0715a8d
+          format: guid
+          type: string
+      - description: The id of the income line
+        in: path
+        name: month
+        required: true
+        schema:
+          example: 2024-12-01
+          format: date
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expense'
+        description: Update an expense line in the ledger
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpenseResponse'
+          description: Successful operation
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Expense line not found
+      summary: Update an expense line
+      tags:
+      - ledger
+components:
+  parameters:
+    month:
+      description: The id of the income line
+      in: path
+      name: month
+      required: true
+      schema:
+        example: 2024-12-01
+        format: date
+        type: string
+    incomeId:
+      description: The id of the income line
+      in: path
+      name: incomeId
+      required: true
+      schema:
+        example: 53240c09-79c3-4601-a625-10b4e0715a8d
+        format: guid
+        type: string
+    expenseId:
+      description: The id of the expense line
+      in: path
+      name: expenseId
+      required: true
+      schema:
+        example: 53240c09-79c3-4601-a625-10b4e0715a8d
+        format: guid
+        type: string
+  schemas:
+    Income:
+      example:
+        date: 2024-12-01
+        amount: 10.33
+        name: Salary
+        received: true
+      properties:
+        name:
+          example: Salary
+          type: string
+        amount:
+          example: 10.33
+          format: float
+          minimum: 0
+          type: number
+        date:
+          example: 2024-12-01
+          format: date
+          type: string
+        received:
+          example: true
+          type: boolean
+      required:
+      - amount
+      - date
+      - name
+      - received
+      type: object
+    Expense:
+      example:
+        date: 2024-12-01
+        amount: 2.34
+        name: Christmas Lunch
+        paid: true
+      properties:
+        name:
+          example: Christmas Lunch
+          type: string
+        amount:
+          example: 2.34
+          format: float
+          minimum: 0
+          type: number
+        date:
+          example: 2024-12-01
+          format: date
+          type: string
+        paid:
+          example: true
+          type: boolean
+      required:
+      - amount
+      - date
+      - name
+      - paid
+      type: object
+    IncomeResponse:
+      example:
+        id: id
+      properties:
+        id:
+          format: guid
+          type: string
+      required:
+      - id
+      type: object
+    ExpenseResponse:
+      example:
+        id: id
+      properties:
+        id:
+          format: guid
+          type: string
+      required:
+      - id
+      type: object
