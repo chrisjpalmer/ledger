@@ -1,3 +1,6 @@
+run-local:
+	go run ./cmd/backend
+
 openapi-generate:
 	rm -rf ./internal/api
 	mkdir -p ./internal/api
