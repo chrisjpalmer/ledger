@@ -15,7 +15,7 @@ type Config struct {
 	Port int
 }
 
-func NewServer(c Config) {
+func NewServer(c Config) *Server {
 	var s Server
 	ctl := openapi.NewLedgerAPIController(&s)
 
@@ -24,6 +24,12 @@ func NewServer(c Config) {
 		Addr:    fmt.Sprintf(":%d", c.Port),
 	}
 	s.srv = &srv
+
+	return &s
+}
+
+func (s Server) Listen() {
+
 }
 
 func (s *Server) Close() {
