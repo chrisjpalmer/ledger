@@ -6,6 +6,7 @@ import (
 	"os/signal"
 
 	"github.com/chrisjpalmer/ledger/backend/config"
+	"github.com/chrisjpalmer/ledger/backend/internal/postgres"
 	"github.com/chrisjpalmer/ledger/backend/internal/server"
 	"github.com/joho/godotenv"
 	"go.uber.org/zap"
@@ -34,9 +35,15 @@ func main() {
 	zl.Info("setting log level", zap.String("new_log_level", cfg.LogLevel.String()))
 	lvl.SetLevel(cfg.LogLevel)
 
+	// postgres
+	p, err := postgres.New(zl, cfg.Postgres)
+	if err != nil {
+		zl.Fatal("error while connecting to postgres", zap.Error(err))
+	}
+
 	// start server
 	lisErr := make(chan error, 1)
-	srv := server.NewServer(zl, cfg.Server)
+	srv := server.NewServer(zl, p, cfg.Server)
 	go func() {
 		if err := srv.Listen(); err != nil {
 			lisErr <- err

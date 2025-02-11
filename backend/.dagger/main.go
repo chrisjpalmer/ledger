@@ -36,6 +36,14 @@ func (m *Backend) GrepDir(ctx context.Context, directoryArg *dagger.Directory, p
 		Stdout(ctx)
 }
 
+func (m *Backend) Postgres(ctx context.Context) *dagger.Service {
+	return dag.Container().
+		From("postgres:17.2-bookworm").
+		WithEnvVariable("POSTGRES_PASSWORD", "password").
+		WithExposedPort(5432).
+		AsService()
+}
+
 func (m *Backend) OpenapiGenerate(ctx context.Context, src *dagger.Directory) *dagger.Directory {
 	return dag.Container().
 		From("openapitools/openapi-generator-cli").

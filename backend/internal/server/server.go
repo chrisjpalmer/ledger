@@ -5,12 +5,14 @@ import (
 	"net/http"
 
 	openapi "github.com/chrisjpalmer/ledger/backend/internal/api/go"
+	"github.com/chrisjpalmer/ledger/backend/internal/postgres"
 	"go.uber.org/zap"
 )
 
 type Server struct {
 	httpSrv *http.Server
 	port    int
+	pgs     *postgres.Postgres
 	zl      *zap.Logger
 }
 
@@ -18,9 +20,10 @@ type Config struct {
 	Port int
 }
 
-func NewServer(zl *zap.Logger, c Config) *Server {
+func NewServer(zl *zap.Logger, postgres *postgres.Postgres, c Config) *Server {
 	srv := Server{
 		port: c.Port,
+		pgs:  postgres,
 		zl:   zl,
 	}
 
