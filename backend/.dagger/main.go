@@ -36,12 +36,40 @@ func (m *Backend) GrepDir(ctx context.Context, directoryArg *dagger.Directory, p
 		Stdout(ctx)
 }
 
-func (m *Backend) Postgres(ctx context.Context) *dagger.Service {
+func (m *Backend) PostgresMigrate(ctx context.Context, src *dagger.Directory) (*dagger.Service, error) {
+	pg, err := m.Postgres().Start(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = m.Migrate(ctx, src, pg)
+	if err != nil {
+		return nil, err
+	}
+
+	return pg, nil
+}
+
+func (m *Backend) Postgres() *dagger.Service {
 	return dag.Container().
 		From("postgres:17.2-bookworm").
 		WithEnvVariable("POSTGRES_PASSWORD", "password").
 		WithExposedPort(5432).
 		AsService()
+}
+
+func (m *Backend) Migrate(ctx context.Context, src *dagger.Directory, svc *dagger.Service) (string, error) {
+	// docker run --network host --rm -v $PWD/backend:/flyway/project flyway/flyway
+	return dag.Container().
+		From("flyway/flyway").
+		WithMountedDirectory("/flyway/project", src).
+		WithServiceBinding("db", svc).
+		WithExec([]string{
+			"-url=jdbc:postgresql://db:5432/postgres?user=postgres&password=password",
+			"-workingDirectory=project",
+			"migrate",
+		}, dagger.ContainerWithExecOpts{UseEntrypoint: true}).
+		Stdout(ctx)
 }
 
 func (m *Backend) OpenapiGenerate(ctx context.Context, src *dagger.Directory) *dagger.Directory {
