@@ -21,6 +21,7 @@ import (
 
 type Backend struct{}
 
+// PostgresMigrate - spins up a postgres database and runs the migrations against it.
 func (m *Backend) PostgresMigrate(ctx context.Context, src *dagger.Directory) (*dagger.Service, error) {
 	pg, err := m.Postgres().Start(ctx)
 	if err != nil {
@@ -35,6 +36,7 @@ func (m *Backend) PostgresMigrate(ctx context.Context, src *dagger.Directory) (*
 	return pg, nil
 }
 
+// Postgres - creates a new postgres database
 func (m *Backend) Postgres() *dagger.Service {
 	return dag.Container().
 		From("postgres:17.2-bookworm").
@@ -43,6 +45,9 @@ func (m *Backend) Postgres() *dagger.Service {
 		AsService()
 }
 
+// Migrate - migrates a postgres database.
+// `src` is the directory of the backend project.
+// `svc` is the database endpoint.
 func (m *Backend) Migrate(ctx context.Context, src *dagger.Directory, svc *dagger.Service) (string, error) {
 	return dag.Container().
 		From("flyway/flyway").
@@ -56,6 +61,8 @@ func (m *Backend) Migrate(ctx context.Context, src *dagger.Directory, svc *dagge
 		Stdout(ctx)
 }
 
+// OpenapiGenerate - generates go server boilerplate code from the openapi spec.
+// `src` is the directory of the backend project.
 func (m *Backend) OpenapiGenerate(ctx context.Context, src *dagger.Directory) *dagger.Directory {
 	return dag.Container().
 		From("openapitools/openapi-generator-cli").
