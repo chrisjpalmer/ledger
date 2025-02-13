@@ -44,7 +44,6 @@ func (m *Backend) Postgres() *dagger.Service {
 }
 
 func (m *Backend) Migrate(ctx context.Context, src *dagger.Directory, svc *dagger.Service) (string, error) {
-	// docker run --network host --rm -v $PWD/backend:/flyway/project flyway/flyway
 	return dag.Container().
 		From("flyway/flyway").
 		WithMountedDirectory("/flyway/project", src).
