@@ -21,8 +21,11 @@ import (
 
 type Backend struct{}
 
-const PostgresVersion = "postgres:17.2-bookworm"
-const AlpineGitVersion = "alpine/git:2.47.2"
+const (
+	PostgresVersion            = "postgres:17.2-bookworm"
+	AlpineGitVersion           = "alpine/git:2.47.2"
+	OpenapiGeneratorCLIVersion = "openapitools/openapi-generator-cli:v7.12.0"
+)
 
 // PostgresMigrate - spins up a postgres database and runs the migrations against it.
 func (m *Backend) PostgresMigrate(ctx context.Context, src *dagger.Directory) (*dagger.Service, error) {
@@ -68,7 +71,7 @@ func (m *Backend) Migrate(ctx context.Context, src *dagger.Directory, svc *dagge
 // `src` is the directory of the backend project.
 func (m *Backend) OpenapiGenerate(ctx context.Context, src *dagger.Directory) *dagger.Directory {
 	return dag.Container().
-		From("openapitools/openapi-generator-cli").
+		From(OpenapiGeneratorCLIVersion).
 		WithDirectory("/local", src.Directory("api")).
 		WithExec([]string{
 			"generate",
