@@ -39,7 +39,13 @@ func (m *Backend) CheckPullRequest(ctx context.Context, src *dagger.Directory) (
 		return "", err
 	}
 
-	return strings.Join([]string{drift, integ}, "\n\n"), nil
+	// run PostgresTest
+	pgrs, err := m.PostgresTest(ctx, src, postgres)
+	if err != nil {
+		return "", err
+	}
+
+	return strings.Join([]string{drift, integ, pgrs}, "\n\n"), nil
 }
 
 // Ledger - runs the ledger application
@@ -93,6 +99,29 @@ func (m *Backend) Integration(ctx context.Context, src *dagger.Directory, ledger
 		Stdout(ctx)
 }
 
+func (m *Backend) PostgresTest(ctx context.Context, src *dagger.Directory, postgres *dagger.Service) (string, error) {
+
+	src = cleanSource(src)
+
+	env := map[string]string{
+		"APP_POSTGRES_DATABASE": "postgres",
+		"APP_POSTGRES_HOST":     "database",
+		"APP_POSTGRES_PASSWORD": "password",
+		"APP_POSTGRES_PORT":     "5432",
+		"APP_POSTGRES_USER":     "postgres",
+	}
+
+	pgrs := dag.Go(dagger.GoOpts{Version: GolangVersion}).
+		WithSource(src).
+		WithServiceBinding("database", postgres)
+
+	pgrs = withEnvVarsGo(pgrs, env)
+
+	return pgrs.
+		Exec([]string{"go", "test", "-count=1", "./internal/postgres"}). // pass -count=1 to bust test caching
+		Stdout(ctx)
+}
+
 // cleanSource excludes files from the source directory
 // which are not meant to be in builds or images
 func cleanSource(src *dagger.Directory) *dagger.Directory {
@@ -100,6 +129,13 @@ func cleanSource(src *dagger.Directory) *dagger.Directory {
 }
 
 func withEnvVars(ctn *dagger.Container, env map[string]string) *dagger.Container {
+	for k, v := range env {
+		ctn = ctn.WithEnvVariable(k, v)
+	}
+	return ctn
+}
+
+func withEnvVarsGo(ctn *dagger.GoWithSource, env map[string]string) *dagger.GoWithSource {
 	for k, v := range env {
 		ctn = ctn.WithEnvVariable(k, v)
 	}

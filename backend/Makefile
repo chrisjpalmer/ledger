@@ -18,6 +18,14 @@ integration:
 	dagger call integration --src=$${PWD} --ledger=tcp://localhost:8080
 .PHONY: integration
 
+postgres-test-local:
+	go test -count=1 ./internal/postgres
+.PHONY: postgres-test-local
+
+postgres-test:
+	dagger call postgres-test --src=$${PWD}
+.PHONY: postgres-test
+
 postgres-migrate:
 	dagger call postgres-migrate --src=$${PWD} up
 .PHONY: postgres-migrate
