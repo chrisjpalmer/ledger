@@ -3,6 +3,7 @@ in: path
 description: The id of the income line
 required: true
 schema:
-  type: string
-  format: date
-  example: "2024-12-01"
+  type: integer
+  minimum: 0
+  maximum: 11
+  example: "0"

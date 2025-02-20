@@ -1,0 +1,6 @@
+required:
+  - msg
+type: object
+properties:
+  msg: 
+    type: string
