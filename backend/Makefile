@@ -1,5 +1,13 @@
+check-pull-request:
+	dagger call check-pull-request --src=$${PWD}
+.PHONY: check-pull-request
+
 run-local:
 	go run ./cmd/backend
+
+run:
+	dagger call ledger --src=$${PWD} --postgres=tcp://localhost:5432 up
+.PHONY: run
 
 postgres-migrate:
 	dagger call postgres-migrate --src=$${PWD} up
