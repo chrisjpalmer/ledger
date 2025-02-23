@@ -26,7 +26,8 @@ func (m *Backend) CheckPullRequest(ctx context.Context, src *dagger.Directory) (
 	}
 	defer ledger.Stop(ctx)
 
-	return "", nil
+	// run integration
+	return m.Integration(ctx, src, ledger)
 }
 
 // Ledger - runs the ledger application
@@ -53,7 +54,7 @@ func (m *Backend) Ledger(ctx context.Context, src *dagger.Directory, postgres *d
 // BuildLedger - builds ledger application
 func (m *Backend) BuildLedger(src *dagger.Directory) *dagger.Container {
 
-	src = src.WithoutFile(".env")
+	src = cleanSource(src)
 
 	ledger := dag.Go(dagger.GoOpts{Version: GolangVersion}).
 		WithSource(src).
@@ -65,6 +66,25 @@ func (m *Backend) BuildLedger(src *dagger.Directory) *dagger.Container {
 		WithFile("ledger", ledger).
 		WithEntrypoint([]string{"/app/ledger"}).
 		WithExposedPort(8080)
+}
+
+// Integration - runs the integration tests
+func (m *Backend) Integration(ctx context.Context, src *dagger.Directory, ledger *dagger.Service) (string, error) {
+
+	src = cleanSource(src)
+
+	return dag.Go(dagger.GoOpts{Version: GolangVersion}).
+		WithSource(src).
+		WithServiceBinding("ledger", ledger).
+		WithEnvVariable("LEDGER_URL", "http://ledger:8080").
+		Exec([]string{"go", "test", "-count=1", "./integration"}). // pass -count=1 to bust test caching
+		Stdout(ctx)
+}
+
+// cleanSource excludes files from the source directory
+// which are not meant to be in builds or images
+func cleanSource(src *dagger.Directory) *dagger.Directory {
+	return src.WithoutFile(".env")
 }
 
 func withEnvVars(ctn *dagger.Container, env map[string]string) *dagger.Container {
