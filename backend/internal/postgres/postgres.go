@@ -46,6 +46,5 @@ func New(zl *zap.Logger, cfg Config) (*Postgres, error) {
 }
 
 func (p *Postgres) Close() error {
-	p.pool.Close()
-	return nil
+	return p.Close()
 }
