@@ -35,10 +35,10 @@ type LedgerAPIRouter interface {
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
 type LedgerAPIServicer interface { 
-	AddIncome(context.Context, string, Income) (ImplResponse, error)
-	UpdateIncome(context.Context, string, string, Income) (ImplResponse, error)
-	DeleteIncome(context.Context, string, string) (ImplResponse, error)
-	AddExpense(context.Context, string, Expense) (ImplResponse, error)
-	UpdateExpense(context.Context, string, string, Expense) (ImplResponse, error)
-	DeleteExpense(context.Context, string, string) (ImplResponse, error)
+	AddIncome(context.Context, int32, Income) (ImplResponse, error)
+	UpdateIncome(context.Context, int32, string, Income) (ImplResponse, error)
+	DeleteIncome(context.Context, int32, string) (ImplResponse, error)
+	AddExpense(context.Context, int32, Expense) (ImplResponse, error)
+	UpdateExpense(context.Context, int32, string, Expense) (ImplResponse, error)
+	DeleteExpense(context.Context, int32, string) (ImplResponse, error)
 }

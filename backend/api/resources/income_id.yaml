@@ -5,8 +5,8 @@ put:
   description: Updates a line of income in the ledger
   operationId: updateIncome
   parameters:
-    - $ref: '../parameters/incomeId.yaml'
     - $ref: '../parameters/month.yaml'
+    - $ref: '../parameters/incomeId.yaml'
   requestBody:
     description: Update a line of income in the ledger
     content:
@@ -32,8 +32,8 @@ delete:
   description: Deletes a line of income from the ledger
   operationId: deleteIncome
   parameters:
-    - $ref: '../parameters/incomeId.yaml'
     - $ref: '../parameters/month.yaml'
+    - $ref: '../parameters/incomeId.yaml'
   responses:
     '200':
       description: Successful operation

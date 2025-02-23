@@ -73,12 +73,12 @@ func (c *LedgerAPIController) Routes() Routes {
 		},
 		"UpdateExpense": Route{
 			strings.ToUpper("Put"),
-			"/month/{month}/expense_id",
+			"/month/{month}/expense/{expenseId}",
 			c.UpdateExpense,
 		},
 		"DeleteExpense": Route{
 			strings.ToUpper("Delete"),
-			"/month/{month}/expense_id",
+			"/month/{month}/expense/{expenseId}",
 			c.DeleteExpense,
 		},
 	}
@@ -87,9 +87,14 @@ func (c *LedgerAPIController) Routes() Routes {
 // AddIncome - Add a new line of income
 func (c *LedgerAPIController) AddIncome(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	monthParam := params["month"]
-	if monthParam == "" {
-		c.errorHandler(w, r, &RequiredError{"month"}, nil)
+	monthParam, err := parseNumericParameter[int32](
+		params["month"],
+		WithRequire[int32](parseInt32),
+		WithMinimum[int32](0),
+		WithMaximum[int32](11),
+	)
+	if err != nil {
+		c.errorHandler(w, r, &ParsingError{Param: "month", Err: err}, nil)
 		return
 	}
 	var incomeParam Income
@@ -120,14 +125,19 @@ func (c *LedgerAPIController) AddIncome(w http.ResponseWriter, r *http.Request) 
 // UpdateIncome - Update a line of income
 func (c *LedgerAPIController) UpdateIncome(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
+	monthParam, err := parseNumericParameter[int32](
+		params["month"],
+		WithRequire[int32](parseInt32),
+		WithMinimum[int32](0),
+		WithMaximum[int32](11),
+	)
+	if err != nil {
+		c.errorHandler(w, r, &ParsingError{Param: "month", Err: err}, nil)
+		return
+	}
 	incomeIdParam := params["incomeId"]
 	if incomeIdParam == "" {
 		c.errorHandler(w, r, &RequiredError{"incomeId"}, nil)
-		return
-	}
-	monthParam := params["month"]
-	if monthParam == "" {
-		c.errorHandler(w, r, &RequiredError{"month"}, nil)
 		return
 	}
 	var incomeParam Income
@@ -145,7 +155,7 @@ func (c *LedgerAPIController) UpdateIncome(w http.ResponseWriter, r *http.Reques
 		c.errorHandler(w, r, err, nil)
 		return
 	}
-	result, err := c.service.UpdateIncome(r.Context(), incomeIdParam, monthParam, incomeParam)
+	result, err := c.service.UpdateIncome(r.Context(), monthParam, incomeIdParam, incomeParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
@@ -158,17 +168,22 @@ func (c *LedgerAPIController) UpdateIncome(w http.ResponseWriter, r *http.Reques
 // DeleteIncome - Delete a line of income
 func (c *LedgerAPIController) DeleteIncome(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
+	monthParam, err := parseNumericParameter[int32](
+		params["month"],
+		WithRequire[int32](parseInt32),
+		WithMinimum[int32](0),
+		WithMaximum[int32](11),
+	)
+	if err != nil {
+		c.errorHandler(w, r, &ParsingError{Param: "month", Err: err}, nil)
+		return
+	}
 	incomeIdParam := params["incomeId"]
 	if incomeIdParam == "" {
 		c.errorHandler(w, r, &RequiredError{"incomeId"}, nil)
 		return
 	}
-	monthParam := params["month"]
-	if monthParam == "" {
-		c.errorHandler(w, r, &RequiredError{"month"}, nil)
-		return
-	}
-	result, err := c.service.DeleteIncome(r.Context(), incomeIdParam, monthParam)
+	result, err := c.service.DeleteIncome(r.Context(), monthParam, incomeIdParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
@@ -181,9 +196,14 @@ func (c *LedgerAPIController) DeleteIncome(w http.ResponseWriter, r *http.Reques
 // AddExpense - Add a new expense line
 func (c *LedgerAPIController) AddExpense(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	monthParam := params["month"]
-	if monthParam == "" {
-		c.errorHandler(w, r, &RequiredError{"month"}, nil)
+	monthParam, err := parseNumericParameter[int32](
+		params["month"],
+		WithRequire[int32](parseInt32),
+		WithMinimum[int32](0),
+		WithMaximum[int32](11),
+	)
+	if err != nil {
+		c.errorHandler(w, r, &ParsingError{Param: "month", Err: err}, nil)
 		return
 	}
 	var expenseParam Expense
@@ -214,14 +234,19 @@ func (c *LedgerAPIController) AddExpense(w http.ResponseWriter, r *http.Request)
 // UpdateExpense - Update an expense line
 func (c *LedgerAPIController) UpdateExpense(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
+	monthParam, err := parseNumericParameter[int32](
+		params["month"],
+		WithRequire[int32](parseInt32),
+		WithMinimum[int32](0),
+		WithMaximum[int32](11),
+	)
+	if err != nil {
+		c.errorHandler(w, r, &ParsingError{Param: "month", Err: err}, nil)
+		return
+	}
 	expenseIdParam := params["expenseId"]
 	if expenseIdParam == "" {
 		c.errorHandler(w, r, &RequiredError{"expenseId"}, nil)
-		return
-	}
-	monthParam := params["month"]
-	if monthParam == "" {
-		c.errorHandler(w, r, &RequiredError{"month"}, nil)
 		return
 	}
 	var expenseParam Expense
@@ -239,7 +264,7 @@ func (c *LedgerAPIController) UpdateExpense(w http.ResponseWriter, r *http.Reque
 		c.errorHandler(w, r, err, nil)
 		return
 	}
-	result, err := c.service.UpdateExpense(r.Context(), expenseIdParam, monthParam, expenseParam)
+	result, err := c.service.UpdateExpense(r.Context(), monthParam, expenseIdParam, expenseParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
@@ -252,17 +277,22 @@ func (c *LedgerAPIController) UpdateExpense(w http.ResponseWriter, r *http.Reque
 // DeleteExpense - Delete an expense line
 func (c *LedgerAPIController) DeleteExpense(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
+	monthParam, err := parseNumericParameter[int32](
+		params["month"],
+		WithRequire[int32](parseInt32),
+		WithMinimum[int32](0),
+		WithMaximum[int32](11),
+	)
+	if err != nil {
+		c.errorHandler(w, r, &ParsingError{Param: "month", Err: err}, nil)
+		return
+	}
 	expenseIdParam := params["expenseId"]
 	if expenseIdParam == "" {
 		c.errorHandler(w, r, &RequiredError{"expenseId"}, nil)
 		return
 	}
-	monthParam := params["month"]
-	if monthParam == "" {
-		c.errorHandler(w, r, &RequiredError{"month"}, nil)
-		return
-	}
-	result, err := c.service.DeleteExpense(r.Context(), expenseIdParam, monthParam)
+	result, err := c.service.DeleteExpense(r.Context(), monthParam, expenseIdParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
