@@ -65,6 +65,7 @@ func main() {
 
 	// close
 	srv.Close()
+	p.Close()
 }
 
 func newLogger() (*zap.Logger, zap.AtomicLevel, error) {
