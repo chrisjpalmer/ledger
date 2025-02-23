@@ -20,8 +20,11 @@ func main() {
 	}
 
 	// load env vars
-	if err := godotenv.Load(); err != nil {
-		zl.Fatal("unable to load environment vars: %w", zap.Error(err))
+	if _, err := os.Stat("./.env"); err == nil {
+		zl.Info("detected .env file... loading it in")
+		if err := godotenv.Load(); err != nil {
+			zl.Fatal("unable to load environment vars: %w", zap.Error(err))
+		}
 	}
 
 	// load config
