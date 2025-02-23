@@ -34,3 +34,7 @@ openapi-generate:
 	mkdir -p ./internal/api
 	dagger call openapi-generate --src=. export --path=$${PWD}/internal/api
 .PHONY: openapi-generate
+
+psql:
+	dagger call psql --svc=tcp://localhost:5432
+.PHONY: psql

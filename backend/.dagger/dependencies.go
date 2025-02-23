@@ -21,6 +21,8 @@ import (
 
 type Backend struct{}
 
+const PostgresVersion = "postgres:17.2-bookworm"
+
 // PostgresMigrate - spins up a postgres database and runs the migrations against it.
 func (m *Backend) PostgresMigrate(ctx context.Context, src *dagger.Directory) (*dagger.Service, error) {
 	pg, err := m.Postgres().Start(ctx)
@@ -39,7 +41,7 @@ func (m *Backend) PostgresMigrate(ctx context.Context, src *dagger.Directory) (*
 // Postgres - creates a new postgres database
 func (m *Backend) Postgres() *dagger.Service {
 	return dag.Container().
-		From("postgres:17.2-bookworm").
+		From(PostgresVersion).
 		WithEnvVariable("POSTGRES_PASSWORD", "password").
 		WithExposedPort(5432).
 		AsService()
@@ -76,4 +78,13 @@ func (m *Backend) OpenapiGenerate(ctx context.Context, src *dagger.Directory) *d
 			"-o", "/out",
 		}, dagger.ContainerWithExecOpts{UseEntrypoint: true}).
 		Directory("/out")
+}
+
+// Psql - opens a shell to the running database
+func (m *Backend) Psql(svc *dagger.Service) *dagger.Container {
+	return dag.Container().
+		From(PostgresVersion).
+		WithEnvVariable("PGPASSWORD", "password").
+		WithServiceBinding("database", svc).
+		Terminal(dagger.ContainerTerminalOpts{Cmd: []string{"psql", "-h", "database", "-U", "postgres", "-d", "postgres"}})
 }
