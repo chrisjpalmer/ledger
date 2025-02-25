@@ -120,14 +120,14 @@ func (c *LedgerAPIController) AddIncome(w http.ResponseWriter, r *http.Request) 
 // UpdateIncome - Update a line of income
 func (c *LedgerAPIController) UpdateIncome(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	incomeIdParam := params["incomeId"]
-	if incomeIdParam == "" {
-		c.errorHandler(w, r, &RequiredError{"incomeId"}, nil)
-		return
-	}
 	monthParam := params["month"]
 	if monthParam == "" {
 		c.errorHandler(w, r, &RequiredError{"month"}, nil)
+		return
+	}
+	incomeIdParam := params["incomeId"]
+	if incomeIdParam == "" {
+		c.errorHandler(w, r, &RequiredError{"incomeId"}, nil)
 		return
 	}
 	var incomeParam Income
@@ -145,7 +145,7 @@ func (c *LedgerAPIController) UpdateIncome(w http.ResponseWriter, r *http.Reques
 		c.errorHandler(w, r, err, nil)
 		return
 	}
-	result, err := c.service.UpdateIncome(r.Context(), incomeIdParam, monthParam, incomeParam)
+	result, err := c.service.UpdateIncome(r.Context(), monthParam, incomeIdParam, incomeParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
@@ -158,17 +158,17 @@ func (c *LedgerAPIController) UpdateIncome(w http.ResponseWriter, r *http.Reques
 // DeleteIncome - Delete a line of income
 func (c *LedgerAPIController) DeleteIncome(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	incomeIdParam := params["incomeId"]
-	if incomeIdParam == "" {
-		c.errorHandler(w, r, &RequiredError{"incomeId"}, nil)
-		return
-	}
 	monthParam := params["month"]
 	if monthParam == "" {
 		c.errorHandler(w, r, &RequiredError{"month"}, nil)
 		return
 	}
-	result, err := c.service.DeleteIncome(r.Context(), incomeIdParam, monthParam)
+	incomeIdParam := params["incomeId"]
+	if incomeIdParam == "" {
+		c.errorHandler(w, r, &RequiredError{"incomeId"}, nil)
+		return
+	}
+	result, err := c.service.DeleteIncome(r.Context(), monthParam, incomeIdParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
@@ -214,14 +214,14 @@ func (c *LedgerAPIController) AddExpense(w http.ResponseWriter, r *http.Request)
 // UpdateExpense - Update an expense line
 func (c *LedgerAPIController) UpdateExpense(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	expenseIdParam := params["expenseId"]
-	if expenseIdParam == "" {
-		c.errorHandler(w, r, &RequiredError{"expenseId"}, nil)
-		return
-	}
 	monthParam := params["month"]
 	if monthParam == "" {
 		c.errorHandler(w, r, &RequiredError{"month"}, nil)
+		return
+	}
+	expenseIdParam := params["expenseId"]
+	if expenseIdParam == "" {
+		c.errorHandler(w, r, &RequiredError{"expenseId"}, nil)
 		return
 	}
 	var expenseParam Expense
@@ -239,7 +239,7 @@ func (c *LedgerAPIController) UpdateExpense(w http.ResponseWriter, r *http.Reque
 		c.errorHandler(w, r, err, nil)
 		return
 	}
-	result, err := c.service.UpdateExpense(r.Context(), expenseIdParam, monthParam, expenseParam)
+	result, err := c.service.UpdateExpense(r.Context(), monthParam, expenseIdParam, expenseParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
@@ -252,17 +252,17 @@ func (c *LedgerAPIController) UpdateExpense(w http.ResponseWriter, r *http.Reque
 // DeleteExpense - Delete an expense line
 func (c *LedgerAPIController) DeleteExpense(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	expenseIdParam := params["expenseId"]
-	if expenseIdParam == "" {
-		c.errorHandler(w, r, &RequiredError{"expenseId"}, nil)
-		return
-	}
 	monthParam := params["month"]
 	if monthParam == "" {
 		c.errorHandler(w, r, &RequiredError{"month"}, nil)
 		return
 	}
-	result, err := c.service.DeleteExpense(r.Context(), expenseIdParam, monthParam)
+	expenseIdParam := params["expenseId"]
+	if expenseIdParam == "" {
+		c.errorHandler(w, r, &RequiredError{"expenseId"}, nil)
+		return
+	}
+	result, err := c.service.DeleteExpense(r.Context(), monthParam, expenseIdParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

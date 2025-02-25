@@ -50,19 +50,19 @@ paths:
       parameters:
       - description: The id of the income line
         in: path
-        name: incomeId
-        required: true
-        schema:
-          example: 53240c09-79c3-4601-a625-10b4e0715a8d
-          format: guid
-          type: string
-      - description: The id of the income line
-        in: path
         name: month
         required: true
         schema:
           example: 2024-12-01
           format: date
+          type: string
+      - description: The id of the income line
+        in: path
+        name: incomeId
+        required: true
+        schema:
+          example: 53240c09-79c3-4601-a625-10b4e0715a8d
+          format: guid
           type: string
       responses:
         "200":
@@ -84,19 +84,19 @@ paths:
       parameters:
       - description: The id of the income line
         in: path
-        name: incomeId
-        required: true
-        schema:
-          example: 53240c09-79c3-4601-a625-10b4e0715a8d
-          format: guid
-          type: string
-      - description: The id of the income line
-        in: path
         name: month
         required: true
         schema:
           example: 2024-12-01
           format: date
+          type: string
+      - description: The id of the income line
+        in: path
+        name: incomeId
+        required: true
+        schema:
+          example: 53240c09-79c3-4601-a625-10b4e0715a8d
+          format: guid
           type: string
       requestBody:
         content:
@@ -158,14 +158,6 @@ paths:
       description: Deletes an expense line from the ledger
       operationId: deleteExpense
       parameters:
-      - description: The id of the expense line
-        in: path
-        name: expenseId
-        required: true
-        schema:
-          example: 53240c09-79c3-4601-a625-10b4e0715a8d
-          format: guid
-          type: string
       - description: The id of the income line
         in: path
         name: month
@@ -173,6 +165,14 @@ paths:
         schema:
           example: 2024-12-01
           format: date
+          type: string
+      - description: The id of the expense line
+        in: path
+        name: expenseId
+        required: true
+        schema:
+          example: 53240c09-79c3-4601-a625-10b4e0715a8d
+          format: guid
           type: string
       responses:
         "200":
@@ -192,14 +192,6 @@ paths:
       description: Updates an expense line in the ledger
       operationId: updateExpense
       parameters:
-      - description: The id of the expense line
-        in: path
-        name: expenseId
-        required: true
-        schema:
-          example: 53240c09-79c3-4601-a625-10b4e0715a8d
-          format: guid
-          type: string
       - description: The id of the income line
         in: path
         name: month
@@ -207,6 +199,14 @@ paths:
         schema:
           example: 2024-12-01
           format: date
+          type: string
+      - description: The id of the expense line
+        in: path
+        name: expenseId
+        required: true
+        schema:
+          example: 53240c09-79c3-4601-a625-10b4e0715a8d
+          format: guid
           type: string
       requestBody:
         content:
