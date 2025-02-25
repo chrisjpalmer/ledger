@@ -157,7 +157,7 @@ paths:
       summary: Add a new expense line
       tags:
       - ledger
-  /month/{month}/expense_id:
+  /month/{month}/expense/{expenseId}:
     delete:
       description: Deletes an expense line from the ledger
       operationId: deleteExpense
