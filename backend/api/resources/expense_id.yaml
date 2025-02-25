@@ -5,8 +5,8 @@ put:
   description: Updates an expense line in the ledger
   operationId: updateExpense
   parameters:
-    - $ref: '../parameters/expenseId.yaml'
     - $ref: '../parameters/month.yaml'
+    - $ref: '../parameters/expenseId.yaml'
   requestBody:
     description: Update an expense line in the ledger
     content:
@@ -32,8 +32,8 @@ delete:
   description: Deletes an expense line from the ledger
   operationId: deleteExpense
   parameters:
-    - $ref: '../parameters/expenseId.yaml'
     - $ref: '../parameters/month.yaml'
+    - $ref: '../parameters/expenseId.yaml'
   responses:
     '200':
       description: Successful operation
