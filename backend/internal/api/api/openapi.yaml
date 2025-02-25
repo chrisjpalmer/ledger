@@ -38,9 +38,11 @@ paths:
                 $ref: '#/components/schemas/IncomeResponse'
           description: Successful operation
         "400":
-          description: Invalid ID supplied
-        "404":
-          description: Pet not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid input
       summary: Add a new line of income
       tags:
       - ledger
@@ -74,8 +76,16 @@ paths:
                 $ref: '#/components/schemas/IncomeResponse'
           description: Successful operation
         "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
           description: Invalid input
         "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
           description: Income line not found
       summary: Delete a line of income
       tags:
@@ -116,8 +126,16 @@ paths:
                 $ref: '#/components/schemas/IncomeResponse'
           description: Successful operation
         "400":
-          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid input
         "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
           description: Income line not found
       summary: Update a line of income
       tags:
@@ -151,9 +169,11 @@ paths:
                 $ref: '#/components/schemas/ExpenseResponse'
           description: Successful operation
         "400":
-          description: Invalid ID supplied
-        "404":
-          description: Pet not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid input
       summary: Add a new expense line
       tags:
       - ledger
@@ -187,8 +207,16 @@ paths:
                 $ref: '#/components/schemas/ExpenseResponse'
           description: Successful operation
         "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
           description: Invalid input
         "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
           description: Expense line not found
       summary: Delete an expense line
       tags:
@@ -229,8 +257,16 @@ paths:
                 $ref: '#/components/schemas/ExpenseResponse'
           description: Successful operation
         "400":
-          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid input
         "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
           description: Expense line not found
       summary: Update an expense line
       tags:
@@ -321,6 +357,15 @@ components:
       - date
       - name
       - paid
+      type: object
+    ErrorResponse:
+      example:
+        msg: msg
+      properties:
+        msg:
+          type: string
+      required:
+      - msg
       type: object
     IncomeResponse:
       example:

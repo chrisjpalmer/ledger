@@ -22,3 +22,5 @@ components:
       $ref: './schemas/Income.yaml'
     Expense:
       $ref: './schemas/Expense.yaml'
+    ErrorResponse:
+      $ref: './responseBodies/ErrorResponse.yaml'

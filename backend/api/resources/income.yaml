@@ -21,6 +21,8 @@ post:
           schema:
             $ref: '../responseBodies/IncomeResponse.yaml'
     '400':
-      description: Invalid ID supplied
-    '404':
-      description: Pet not found
+      description: Invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '../responseBodies/ErrorResponse.yaml'
