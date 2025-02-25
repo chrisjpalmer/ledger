@@ -22,9 +22,17 @@ put:
           schema:
             $ref: '../responseBodies/IncomeResponse.yaml'
     '400':
-      description: Invalid ID supplied
+      description: Invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '../responseBodies/ErrorResponse.yaml'
     '404':
       description: Income line not found
+      content:
+        application/json:
+          schema:
+            $ref: '../responseBodies/ErrorResponse.yaml'
 delete:
   tags:
     - ledger
@@ -43,5 +51,13 @@ delete:
             $ref: '../responseBodies/IncomeResponse.yaml'
     '400':
       description: Invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '../responseBodies/ErrorResponse.yaml'
     '404':
       description: Income line not found
+      content:
+        application/json:
+          schema:
+            $ref: '../responseBodies/ErrorResponse.yaml'
