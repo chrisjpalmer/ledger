@@ -87,9 +87,14 @@ func (c *LedgerAPIController) Routes() Routes {
 // AddIncome - Add a new line of income
 func (c *LedgerAPIController) AddIncome(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	monthParam := params["month"]
-	if monthParam == "" {
-		c.errorHandler(w, r, &RequiredError{"month"}, nil)
+	monthParam, err := parseNumericParameter[int32](
+		params["month"],
+		WithRequire[int32](parseInt32),
+		WithMinimum[int32](0),
+		WithMaximum[int32](11),
+	)
+	if err != nil {
+		c.errorHandler(w, r, &ParsingError{Param: "month", Err: err}, nil)
 		return
 	}
 	var incomeParam Income
@@ -120,9 +125,14 @@ func (c *LedgerAPIController) AddIncome(w http.ResponseWriter, r *http.Request) 
 // UpdateIncome - Update a line of income
 func (c *LedgerAPIController) UpdateIncome(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	monthParam := params["month"]
-	if monthParam == "" {
-		c.errorHandler(w, r, &RequiredError{"month"}, nil)
+	monthParam, err := parseNumericParameter[int32](
+		params["month"],
+		WithRequire[int32](parseInt32),
+		WithMinimum[int32](0),
+		WithMaximum[int32](11),
+	)
+	if err != nil {
+		c.errorHandler(w, r, &ParsingError{Param: "month", Err: err}, nil)
 		return
 	}
 	incomeIdParam := params["incomeId"]
@@ -158,9 +168,14 @@ func (c *LedgerAPIController) UpdateIncome(w http.ResponseWriter, r *http.Reques
 // DeleteIncome - Delete a line of income
 func (c *LedgerAPIController) DeleteIncome(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	monthParam := params["month"]
-	if monthParam == "" {
-		c.errorHandler(w, r, &RequiredError{"month"}, nil)
+	monthParam, err := parseNumericParameter[int32](
+		params["month"],
+		WithRequire[int32](parseInt32),
+		WithMinimum[int32](0),
+		WithMaximum[int32](11),
+	)
+	if err != nil {
+		c.errorHandler(w, r, &ParsingError{Param: "month", Err: err}, nil)
 		return
 	}
 	incomeIdParam := params["incomeId"]
@@ -181,9 +196,14 @@ func (c *LedgerAPIController) DeleteIncome(w http.ResponseWriter, r *http.Reques
 // AddExpense - Add a new expense line
 func (c *LedgerAPIController) AddExpense(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	monthParam := params["month"]
-	if monthParam == "" {
-		c.errorHandler(w, r, &RequiredError{"month"}, nil)
+	monthParam, err := parseNumericParameter[int32](
+		params["month"],
+		WithRequire[int32](parseInt32),
+		WithMinimum[int32](0),
+		WithMaximum[int32](11),
+	)
+	if err != nil {
+		c.errorHandler(w, r, &ParsingError{Param: "month", Err: err}, nil)
 		return
 	}
 	var expenseParam Expense
@@ -214,9 +234,14 @@ func (c *LedgerAPIController) AddExpense(w http.ResponseWriter, r *http.Request)
 // UpdateExpense - Update an expense line
 func (c *LedgerAPIController) UpdateExpense(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	monthParam := params["month"]
-	if monthParam == "" {
-		c.errorHandler(w, r, &RequiredError{"month"}, nil)
+	monthParam, err := parseNumericParameter[int32](
+		params["month"],
+		WithRequire[int32](parseInt32),
+		WithMinimum[int32](0),
+		WithMaximum[int32](11),
+	)
+	if err != nil {
+		c.errorHandler(w, r, &ParsingError{Param: "month", Err: err}, nil)
 		return
 	}
 	expenseIdParam := params["expenseId"]
@@ -252,9 +277,14 @@ func (c *LedgerAPIController) UpdateExpense(w http.ResponseWriter, r *http.Reque
 // DeleteExpense - Delete an expense line
 func (c *LedgerAPIController) DeleteExpense(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	monthParam := params["month"]
-	if monthParam == "" {
-		c.errorHandler(w, r, &RequiredError{"month"}, nil)
+	monthParam, err := parseNumericParameter[int32](
+		params["month"],
+		WithRequire[int32](parseInt32),
+		WithMinimum[int32](0),
+		WithMaximum[int32](11),
+	)
+	if err != nil {
+		c.errorHandler(w, r, &ParsingError{Param: "month", Err: err}, nil)
 		return
 	}
 	expenseIdParam := params["expenseId"]

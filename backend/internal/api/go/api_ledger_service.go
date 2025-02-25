@@ -28,7 +28,7 @@ func NewLedgerAPIService() *LedgerAPIService {
 }
 
 // AddIncome - Add a new line of income
-func (s *LedgerAPIService) AddIncome(ctx context.Context, month string, income Income) (ImplResponse, error) {
+func (s *LedgerAPIService) AddIncome(ctx context.Context, month int32, income Income) (ImplResponse, error) {
 	// TODO - update AddIncome with the required logic for this service method.
 	// Add api_ledger_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
@@ -45,7 +45,7 @@ func (s *LedgerAPIService) AddIncome(ctx context.Context, month string, income I
 }
 
 // UpdateIncome - Update a line of income
-func (s *LedgerAPIService) UpdateIncome(ctx context.Context, month string, incomeId string, income Income) (ImplResponse, error) {
+func (s *LedgerAPIService) UpdateIncome(ctx context.Context, month int32, incomeId string, income Income) (ImplResponse, error) {
 	// TODO - update UpdateIncome with the required logic for this service method.
 	// Add api_ledger_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
@@ -62,7 +62,7 @@ func (s *LedgerAPIService) UpdateIncome(ctx context.Context, month string, incom
 }
 
 // DeleteIncome - Delete a line of income
-func (s *LedgerAPIService) DeleteIncome(ctx context.Context, month string, incomeId string) (ImplResponse, error) {
+func (s *LedgerAPIService) DeleteIncome(ctx context.Context, month int32, incomeId string) (ImplResponse, error) {
 	// TODO - update DeleteIncome with the required logic for this service method.
 	// Add api_ledger_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
@@ -79,7 +79,7 @@ func (s *LedgerAPIService) DeleteIncome(ctx context.Context, month string, incom
 }
 
 // AddExpense - Add a new expense line
-func (s *LedgerAPIService) AddExpense(ctx context.Context, month string, expense Expense) (ImplResponse, error) {
+func (s *LedgerAPIService) AddExpense(ctx context.Context, month int32, expense Expense) (ImplResponse, error) {
 	// TODO - update AddExpense with the required logic for this service method.
 	// Add api_ledger_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
@@ -96,7 +96,7 @@ func (s *LedgerAPIService) AddExpense(ctx context.Context, month string, expense
 }
 
 // UpdateExpense - Update an expense line
-func (s *LedgerAPIService) UpdateExpense(ctx context.Context, month string, expenseId string, expense Expense) (ImplResponse, error) {
+func (s *LedgerAPIService) UpdateExpense(ctx context.Context, month int32, expenseId string, expense Expense) (ImplResponse, error) {
 	// TODO - update UpdateExpense with the required logic for this service method.
 	// Add api_ledger_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
@@ -113,7 +113,7 @@ func (s *LedgerAPIService) UpdateExpense(ctx context.Context, month string, expe
 }
 
 // DeleteExpense - Delete an expense line
-func (s *LedgerAPIService) DeleteExpense(ctx context.Context, month string, expenseId string) (ImplResponse, error) {
+func (s *LedgerAPIService) DeleteExpense(ctx context.Context, month int32, expenseId string) (ImplResponse, error) {
 	// TODO - update DeleteExpense with the required logic for this service method.
 	// Add api_ledger_service.go to the .openapi-generator-ignore to avoid overwriting this service implementation when updating open api generation.
 
