@@ -73,12 +73,12 @@ func (c *LedgerAPIController) Routes() Routes {
 		},
 		"UpdateExpense": Route{
 			strings.ToUpper("Put"),
-			"/month/{month}/expense_id",
+			"/month/{month}/expense/{expenseId}",
 			c.UpdateExpense,
 		},
 		"DeleteExpense": Route{
 			strings.ToUpper("Delete"),
-			"/month/{month}/expense_id",
+			"/month/{month}/expense/{expenseId}",
 			c.DeleteExpense,
 		},
 	}

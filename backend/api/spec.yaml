@@ -14,7 +14,7 @@ paths:
     $ref: './resources/income_id.yaml'
   /month/{month}/expense:
     $ref: './resources/expense.yaml'
-  /month/{month}/expense_id:
+  /month/{month}/expense/{expenseId}:
     $ref: './resources/expense_id.yaml'
 components:
   schemas:
