@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"dagger/backend/internal/dagger"
+	"strings"
 )
 
 const AlpineVersion = "alpine:3.20"
@@ -26,8 +27,19 @@ func (m *Backend) CheckPullRequest(ctx context.Context, src *dagger.Directory) (
 	}
 	defer ledger.Stop(ctx)
 
+	// run open api drift
+	drift, err := m.OpenapiDrift(ctx, src)
+	if err != nil {
+		return "", err
+	}
+
 	// run integration
-	return m.Integration(ctx, src, ledger)
+	integ, err := m.Integration(ctx, src, ledger)
+	if err != nil {
+		return "", err
+	}
+
+	return strings.Join([]string{drift, integ}, "\n\n"), nil
 }
 
 // Ledger - runs the ledger application

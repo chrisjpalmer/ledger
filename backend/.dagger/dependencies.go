@@ -22,6 +22,7 @@ import (
 type Backend struct{}
 
 const PostgresVersion = "postgres:17.2-bookworm"
+const AlpineGitVersion = "alpine/git:2.47.2"
 
 // PostgresMigrate - spins up a postgres database and runs the migrations against it.
 func (m *Backend) PostgresMigrate(ctx context.Context, src *dagger.Directory) (*dagger.Service, error) {
@@ -78,6 +79,23 @@ func (m *Backend) OpenapiGenerate(ctx context.Context, src *dagger.Directory) *d
 		}, dagger.ContainerWithExecOpts{UseEntrypoint: true}).
 		Directory("/out").
 		WithoutFile("README.md")
+}
+
+func (m *Backend) OpenapiDrift(ctx context.Context, src *dagger.Directory) (string, error) {
+	gen := m.OpenapiGenerate(ctx, src)
+
+	return dag.Container().
+		From(AlpineGitVersion).
+		WithWorkdir("/app").
+		WithDirectory(".", src.Directory("./internal/api")).
+		WithExec([]string{"git", "init"}).
+		WithExec([]string{"git", "config", "--global", "user.email", "you@example.com"}).
+		WithExec([]string{"git", "config", "--global", "user.name", "Your Name"}).
+		WithExec([]string{"git", "add", "*"}).
+		WithExec([]string{"git", "commit", "-m", "base"}).
+		WithDirectory(".", gen).
+		WithExec([]string{"sh", "-c", "if [[ $(git status --porcelain | wc -l) -gt 0 ]]; then git status --porcelain; exit 1; else exit 0; fi"}).
+		Stdout(ctx)
 }
 
 // Psql - opens a shell to the running database

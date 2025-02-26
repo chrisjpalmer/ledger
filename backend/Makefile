@@ -29,6 +29,10 @@ migrate:
 	dagger call migrate --src=$${PWD} --svc=tcp://localhost:5432
 .PHONY: migrate
 
+openapi-drift:
+	dagger call openapi-drift --src=.
+.PHONY: openapi-drift
+
 openapi-generate:
 	rm -rf ./internal/api
 	mkdir -p ./internal/api
