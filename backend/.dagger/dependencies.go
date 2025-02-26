@@ -69,7 +69,6 @@ func (m *Backend) OpenapiGenerate(ctx context.Context, src *dagger.Directory) *d
 	return dag.Container().
 		From("openapitools/openapi-generator-cli").
 		WithDirectory("/local", src.Directory("api")).
-		WithDirectory("/out", src.Directory("internal/api")).
 		WithExec([]string{
 			"generate",
 			"-i", "/local/spec.yaml",
