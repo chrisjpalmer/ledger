@@ -77,7 +77,8 @@ func (m *Backend) OpenapiGenerate(ctx context.Context, src *dagger.Directory) *d
 			"-p", "outputAsLibrary=true",
 			"-o", "/out",
 		}, dagger.ContainerWithExecOpts{UseEntrypoint: true}).
-		Directory("/out")
+		Directory("/out").
+		WithoutFile("README.md")
 }
 
 // Psql - opens a shell to the running database
