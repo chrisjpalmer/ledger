@@ -25,6 +25,9 @@ postgres:
 	dagger call postgres up
 .PHONY: postgres
 
+psql:
+	dagger call psql --svc=tcp://localhost:5432
+
 migrate:
 	dagger call migrate --src=$${PWD} --svc=tcp://localhost:5432
 .PHONY: migrate
