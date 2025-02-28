@@ -3,10 +3,12 @@ package config
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 
 	"github.com/chrisjpalmer/ledger/backend/internal/postgres"
 	"github.com/chrisjpalmer/ledger/backend/internal/server"
+	"github.com/joho/godotenv"
 	"go.uber.org/zap/zapcore"
 )
 
@@ -16,23 +18,43 @@ type Config struct {
 	Server   server.Config
 }
 
+// HasDotEnv - returns true if a .env file exists
+func HasDotEnv(dir string) bool {
+	stat, err := os.Stat(filepath.Join(dir, ".env"))
+	_ = stat
+	return err == nil
+}
+
+// LoadDotEnv - attempts to load the .env file
+func LoadDotEnv(dir string) error {
+	return godotenv.Load(filepath.Join(dir, ".env"))
+}
+
 func Load() (Config, *Errors) {
 	var e Errors
 	cfg := Config{
 		LogLevel: parseLogLevel("APP_LOGLEVEL", &e),
-		Postgres: postgres.Config{
-			Database: parseString("APP_POSTGRES_DATABASE", &e),
-			Host:     parseString("APP_POSTGRES_HOST", &e),
-			Password: parseString("APP_POSTGRES_PASSWORD", &e),
-			Port:     parseUint16("APP_POSTGRES_PORT", &e),
-			User:     parseString("APP_POSTGRES_USER", &e),
-		},
-		Server: server.Config{
-			Port: parseInt("APP_SERVER_PORT", &e),
-		},
+		Postgres: LoadPostgresConfig(&e),
+		Server:   LoadServerConfig(&e),
 	}
 
 	return cfg, &e
+}
+
+func LoadPostgresConfig(e *Errors) postgres.Config {
+	return postgres.Config{
+		Database: parseString("APP_POSTGRES_DATABASE", e),
+		Host:     parseString("APP_POSTGRES_HOST", e),
+		Password: parseString("APP_POSTGRES_PASSWORD", e),
+		Port:     parseUint16("APP_POSTGRES_PORT", e),
+		User:     parseString("APP_POSTGRES_USER", e),
+	}
+}
+
+func LoadServerConfig(e *Errors) server.Config {
+	return server.Config{
+		Port: parseInt("APP_SERVER_PORT", e),
+	}
 }
 
 func parseString(key string, e *Errors) string {
