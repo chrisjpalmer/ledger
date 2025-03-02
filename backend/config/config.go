@@ -3,12 +3,26 @@ package config
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 
 	"github.com/chrisjpalmer/ledger/backend/internal/postgres"
 	"github.com/chrisjpalmer/ledger/backend/internal/server"
+	"github.com/joho/godotenv"
 	"go.uber.org/zap/zapcore"
 )
+
+// HasDotEnv - returns true if a .env file exists
+func HasDotEnv(dir string) bool {
+	stat, err := os.Stat(filepath.Join(dir, ".env"))
+	_ = stat
+	return err == nil
+}
+
+// LoadDotEnv - attempts to load the .env file
+func LoadDotEnv(dir string) error {
+	return godotenv.Load(filepath.Join(dir, ".env"))
+}
 
 type Config struct {
 	LogLevel zapcore.Level

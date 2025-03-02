@@ -8,7 +8,6 @@ import (
 	"github.com/chrisjpalmer/ledger/backend/config"
 	"github.com/chrisjpalmer/ledger/backend/internal/postgres"
 	"github.com/chrisjpalmer/ledger/backend/internal/server"
-	"github.com/joho/godotenv"
 	"go.uber.org/zap"
 )
 
@@ -20,9 +19,9 @@ func main() {
 	}
 
 	// load env vars
-	if _, err := os.Stat("./.env"); err == nil {
+	if config.HasDotEnv(".") {
 		zl.Info("detected .env file... loading it in")
-		if err := godotenv.Load(); err != nil {
+		if err := config.LoadDotEnv("."); err != nil {
 			zl.Fatal("unable to load environment vars: %w", zap.Error(err))
 		}
 	}
