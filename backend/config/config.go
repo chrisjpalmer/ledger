@@ -34,19 +34,29 @@ func Load() (Config, *Errors) {
 	var e Errors
 	cfg := Config{
 		LogLevel: parseLogLevel("APP_LOGLEVEL", &e),
-		Postgres: postgres.Config{
-			Database: parseString("APP_POSTGRES_DATABASE", &e),
-			Host:     parseString("APP_POSTGRES_HOST", &e),
-			Password: parseString("APP_POSTGRES_PASSWORD", &e),
-			Port:     parseUint16("APP_POSTGRES_PORT", &e),
-			User:     parseString("APP_POSTGRES_USER", &e),
-		},
-		Server: server.Config{
-			Port: parseInt("APP_SERVER_PORT", &e),
-		},
+		Postgres: LoadPostgresConfig(&e),
+		Server:   LoadServerConfig(&e),
 	}
 
 	return cfg, &e
+}
+
+// LoadPostgresConfig - loads the config for postgres from the environment
+func LoadPostgresConfig(e *Errors) postgres.Config {
+	return postgres.Config{
+		Database: parseString("APP_POSTGRES_DATABASE", e),
+		Host:     parseString("APP_POSTGRES_HOST", e),
+		Password: parseString("APP_POSTGRES_PASSWORD", e),
+		Port:     parseUint16("APP_POSTGRES_PORT", e),
+		User:     parseString("APP_POSTGRES_USER", e),
+	}
+}
+
+// LoadServerConfig - loads the config for the server from the environment
+func LoadServerConfig(e *Errors) server.Config {
+	return server.Config{
+		Port: parseInt("APP_SERVER_PORT", e),
+	}
 }
 
 func parseString(key string, e *Errors) string {
