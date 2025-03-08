@@ -4,6 +4,7 @@ check-pull-request:
 
 run-local:
 	go run ./cmd/backend
+.PHONY: run-local
 
 run:
 	dagger call ledger --src=$${PWD} --postgres=tcp://localhost:5432 up
@@ -30,13 +31,14 @@ migrate:
 .PHONY: migrate
 
 openapi-drift:
-	dagger call openapi-drift --src=.
+	dagger call openapi-drift --src=$${PWD}
 .PHONY: openapi-drift
 
 openapi-generate:
 	rm -rf ./internal/api
 	mkdir -p ./internal/api
-	dagger call openapi-generate --src=. export --path=$${PWD}/internal/api
+	dagger call openapi-generate --src=$${PWD} export --path=$${PWD}/internal/api
+
 .PHONY: openapi-generate
 
 psql:
