@@ -17,6 +17,7 @@ package main
 import (
 	"context"
 	"dagger/backend/internal/dagger"
+	"time"
 )
 
 type Backend struct{}
@@ -59,6 +60,7 @@ func (m *Backend) Migrate(ctx context.Context, src *dagger.Directory, svc *dagge
 		From("flyway/flyway").
 		WithMountedDirectory("/flyway/project", src).
 		WithServiceBinding("db", svc).
+		WithEnvVariable("CACHE_BUSTER", time.Now().String()).
 		WithExec([]string{
 			"-url=jdbc:postgresql://db:5432/postgres?user=postgres&password=password",
 			"-workingDirectory=project",

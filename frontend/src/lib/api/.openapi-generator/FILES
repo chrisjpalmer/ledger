@@ -1,0 +1,13 @@
+.openapi-generator-ignore
+apis/LedgerApi.ts
+apis/index.ts
+index.ts
+models/ErrorResponse.ts
+models/Expense.ts
+models/ExpenseResponse.ts
+models/GetExpensesResponse.ts
+models/GetIncomeResponse.ts
+models/Income.ts
+models/IncomeResponse.ts
+models/index.ts
+runtime.ts

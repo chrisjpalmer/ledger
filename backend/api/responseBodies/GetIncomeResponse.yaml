@@ -1,0 +1,8 @@
+required:
+  - income
+type: object
+properties:
+  income:
+    type: array
+    items:
+      $ref: '../schemas/Income.yaml'

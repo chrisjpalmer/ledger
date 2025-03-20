@@ -21,9 +21,11 @@ import (
 // The LedgerAPIRouter implementation should parse necessary information from the http request,
 // pass the data to a LedgerAPIServicer to perform the required actions, then write the service results to the http response.
 type LedgerAPIRouter interface { 
+	GetIncome(http.ResponseWriter, *http.Request)
 	AddIncome(http.ResponseWriter, *http.Request)
 	UpdateIncome(http.ResponseWriter, *http.Request)
 	DeleteIncome(http.ResponseWriter, *http.Request)
+	GetExpenses(http.ResponseWriter, *http.Request)
 	AddExpense(http.ResponseWriter, *http.Request)
 	UpdateExpense(http.ResponseWriter, *http.Request)
 	DeleteExpense(http.ResponseWriter, *http.Request)
@@ -35,9 +37,11 @@ type LedgerAPIRouter interface {
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
 type LedgerAPIServicer interface { 
+	GetIncome(context.Context, int32) (ImplResponse, error)
 	AddIncome(context.Context, int32, Income) (ImplResponse, error)
 	UpdateIncome(context.Context, int32, string, Income) (ImplResponse, error)
 	DeleteIncome(context.Context, int32, string) (ImplResponse, error)
+	GetExpenses(context.Context, int32) (ImplResponse, error)
 	AddExpense(context.Context, int32, Expense) (ImplResponse, error)
 	UpdateExpense(context.Context, int32, string, Expense) (ImplResponse, error)
 	DeleteExpense(context.Context, int32, string) (ImplResponse, error)

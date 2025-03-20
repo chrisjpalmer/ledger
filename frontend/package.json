@@ -1,0 +1,43 @@
+{
+	"name": "frontend",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"test:unit": "vitest",
+		"test": "npm run test:unit -- --run && npm run test:e2e",
+		"test:e2e": "playwright test",
+		"openapi-generate": "dagger call openapi-generate --spec=../backend/internal/api/api/openapi.yaml export --path=${PWD}/src/lib/api",
+		"openapi-drift": "dagger call openapi-drift --src=. --spec=../backend/internal/api/api/openapi.yaml",
+		"check-pull-request": "dagger call check-pull-request --src=. --spec=../backend/internal/api/api/openapi.yaml"
+	},
+	"devDependencies": {
+		"@playwright/test": "^1.49.1",
+		"@sveltejs/adapter-auto": "^4.0.0",
+		"@sveltejs/kit": "^2.16.0",
+		"@sveltejs/vite-plugin-svelte": "^5.0.0",
+		"@tailwindcss/forms": "^0.5.9",
+		"@tailwindcss/typography": "^0.5.15",
+		"@tailwindcss/vite": "^4.0.0",
+		"@testing-library/jest-dom": "^6.6.3",
+		"@testing-library/svelte": "^5.2.4",
+		"flowbite": "^3.1.2",
+		"flowbite-svelte": "^0.48.6",
+		"jsdom": "^26.0.0",
+		"svelte": "^5.0.0",
+		"svelte-check": "^4.0.0",
+		"tailwindcss": "^4.0.0",
+		"typescript": "^5.0.0",
+		"vite": "^6.0.0",
+		"vitest": "^3.0.0"
+	},
+	"dependencies": {
+		"flowbite-svelte-icons": "^2.1.1"
+	}
+}

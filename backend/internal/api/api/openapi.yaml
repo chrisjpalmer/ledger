@@ -10,6 +10,35 @@ tags:
   name: ledger
 paths:
   /month/{month}/income:
+    get:
+      description: Lists all the income lines
+      operationId: getIncome
+      parameters:
+      - description: The id of the income line
+        in: path
+        name: month
+        required: true
+        schema:
+          example: 0
+          maximum: 11
+          minimum: 0
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetIncomeResponse'
+          description: Successful operation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid input
+      summary: Lists all income
+      tags:
+      - ledger
     post:
       description: Adds a new line of income to the ledger.
       operationId: addIncome
@@ -141,6 +170,35 @@ paths:
       tags:
       - ledger
   /month/{month}/expense:
+    get:
+      description: Lists all the expense lines
+      operationId: getExpenses
+      parameters:
+      - description: The id of the income line
+        in: path
+        name: month
+        required: true
+        schema:
+          example: 0
+          maximum: 11
+          minimum: 0
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetExpensesResponse'
+          description: Successful operation
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid input
+      summary: Lists all expenses
+      tags:
+      - ledger
     post:
       description: Adds a new expense line to the ledger.
       operationId: addExpense
@@ -308,7 +366,11 @@ components:
         amount: 10.33
         name: Salary
         received: true
+        id: d7982b1e-397c-4b08-854f-7fab38e29c7b
       properties:
+        id:
+          example: d7982b1e-397c-4b08-854f-7fab38e29c7b
+          type: string
         name:
           example: Salary
           type: string
@@ -325,10 +387,8 @@ components:
           example: true
           type: boolean
       required:
-      - amount
       - date
       - name
-      - received
       type: object
     Expense:
       example:
@@ -336,7 +396,11 @@ components:
         amount: 2.34
         name: Christmas Lunch
         paid: true
+        id: d7982b1e-397c-4b08-854f-7fab38e29c7b
       properties:
+        id:
+          example: d7982b1e-397c-4b08-854f-7fab38e29c7b
+          type: string
         name:
           example: Christmas Lunch
           type: string
@@ -353,10 +417,8 @@ components:
           example: true
           type: boolean
       required:
-      - amount
       - date
       - name
-      - paid
       type: object
     ErrorResponse:
       example:
@@ -367,6 +429,27 @@ components:
       required:
       - msg
       type: object
+    GetIncomeResponse:
+      example:
+        income:
+        - date: 2024-12-01
+          amount: 10.33
+          name: Salary
+          received: true
+          id: d7982b1e-397c-4b08-854f-7fab38e29c7b
+        - date: 2024-12-01
+          amount: 10.33
+          name: Salary
+          received: true
+          id: d7982b1e-397c-4b08-854f-7fab38e29c7b
+      properties:
+        income:
+          items:
+            $ref: '#/components/schemas/Income'
+          type: array
+      required:
+      - income
+      type: object
     IncomeResponse:
       example:
         id: id
@@ -376,6 +459,27 @@ components:
           type: string
       required:
       - id
+      type: object
+    GetExpensesResponse:
+      example:
+        expenses:
+        - date: 2024-12-01
+          amount: 2.34
+          name: Christmas Lunch
+          paid: true
+          id: d7982b1e-397c-4b08-854f-7fab38e29c7b
+        - date: 2024-12-01
+          amount: 2.34
+          name: Christmas Lunch
+          paid: true
+          id: d7982b1e-397c-4b08-854f-7fab38e29c7b
+      properties:
+        expenses:
+          items:
+            $ref: '#/components/schemas/Expense'
+          type: array
+      required:
+      - expenses
       type: object
     ExpenseResponse:
       example:

@@ -19,22 +19,22 @@ import (
 
 type Expense struct {
 
+	Id string `json:"id,omitempty"`
+
 	Name string `json:"name"`
 
-	Amount float32 `json:"amount"`
+	Amount float32 `json:"amount,omitempty"`
 
 	Date string `json:"date"`
 
-	Paid bool `json:"paid"`
+	Paid bool `json:"paid,omitempty"`
 }
 
 // AssertExpenseRequired checks if the required fields are not zero-ed
 func AssertExpenseRequired(obj Expense) error {
 	elements := map[string]interface{}{
 		"name": obj.Name,
-		"amount": obj.Amount,
 		"date": obj.Date,
-		"paid": obj.Paid,
 	}
 	for name, el := range elements {
 		if isZero := IsZeroValue(el); isZero {
