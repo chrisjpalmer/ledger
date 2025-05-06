@@ -1,10 +1,11 @@
 required:
   - name
-  - amount
   - date
-  - received
 type: object
 properties:
+  id:
+    type: string
+    example: "d7982b1e-397c-4b08-854f-7fab38e29c7b"
   name:
     type: string
     example: Salary

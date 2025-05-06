@@ -1,3 +1,24 @@
+get:
+  tags:
+    - ledger
+  summary: Lists all expenses
+  description: Lists all the expense lines
+  operationId: getExpenses
+  parameters:
+    - $ref: '../parameters/month.yaml'
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '../responseBodies/GetExpensesResponse.yaml'
+    '400':
+      description: Invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '../responseBodies/ErrorResponse.yaml'
 post:
   tags:
     - ledger

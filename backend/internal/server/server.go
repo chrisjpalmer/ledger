@@ -7,6 +7,7 @@ import (
 
 	openapi "github.com/chrisjpalmer/ledger/backend/internal/api/go"
 	"github.com/chrisjpalmer/ledger/backend/internal/postgres"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 )
@@ -31,8 +32,9 @@ func NewServer(zl *zap.Logger, postgres *postgres.Postgres, c Config) *Server {
 
 	// configure server
 	ctl := openapi.NewLedgerAPIController(&srv)
+	cors := handlers.CORS(handlers.AllowedHeaders([]string{"Content-Type"}))
 	srv.httpSrv = &http.Server{
-		Handler: newRouter(zl, ctl),
+		Handler: cors(newRouter(zl, ctl)),
 		Addr:    fmt.Sprintf(":%d", c.Port),
 	}
 

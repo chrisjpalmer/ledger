@@ -48,6 +48,24 @@ func (m *Backend) CheckPullRequest(ctx context.Context, src *dagger.Directory) (
 	return strings.Join([]string{drift, integ, pgrs}, "\n\n"), nil
 }
 
+// Dev - runs the ledger application with dependencies also running for dev mode
+func (m *Backend) Dev(ctx context.Context, src *dagger.Directory) (*dagger.Service, error) {
+	// start postgres
+	postgres, err := m.PostgresMigrate(ctx, src)
+	if err != nil {
+		return nil, err
+	}
+
+	// start ledger
+	ledger := m.Ledger(ctx, src, postgres)
+	ledger, err = ledger.Start(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return ledger, nil
+}
+
 // Ledger - runs the ledger application
 func (m *Backend) Ledger(ctx context.Context, src *dagger.Directory, postgres *dagger.Service) *dagger.Service {
 

@@ -10,6 +10,10 @@ run:
 	dagger call ledger --src=$${PWD} --postgres=tcp://localhost:5432 up
 .PHONY: run
 
+dev:
+	dagger call dev --src=$${PWD} up
+.PHONY: dev
+
 integration-local:
 	go test -count=1 ./integration
 .PHONY: integration-local
@@ -23,7 +27,7 @@ postgres-test-local:
 .PHONY: postgres-test-local
 
 postgres-test:
-	dagger call postgres-test --src=$${PWD}
+	dagger call postgres-test --src=$${PWD} --postgres=tcp://localhost:5432
 .PHONY: postgres-test
 
 postgres-migrate:

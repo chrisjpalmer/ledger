@@ -51,6 +51,11 @@ func NewLedgerAPIController(s LedgerAPIServicer, opts ...LedgerAPIOption) *Ledge
 // Routes returns all the api routes for the LedgerAPIController
 func (c *LedgerAPIController) Routes() Routes {
 	return Routes{
+		"GetIncome": Route{
+			strings.ToUpper("Get"),
+			"/month/{month}/income",
+			c.GetIncome,
+		},
 		"AddIncome": Route{
 			strings.ToUpper("Post"),
 			"/month/{month}/income",
@@ -65,6 +70,11 @@ func (c *LedgerAPIController) Routes() Routes {
 			strings.ToUpper("Delete"),
 			"/month/{month}/income/{incomeId}",
 			c.DeleteIncome,
+		},
+		"GetExpenses": Route{
+			strings.ToUpper("Get"),
+			"/month/{month}/expense",
+			c.GetExpenses,
 		},
 		"AddExpense": Route{
 			strings.ToUpper("Post"),
@@ -82,6 +92,29 @@ func (c *LedgerAPIController) Routes() Routes {
 			c.DeleteExpense,
 		},
 	}
+}
+
+// GetIncome - Lists all income
+func (c *LedgerAPIController) GetIncome(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	monthParam, err := parseNumericParameter[int32](
+		params["month"],
+		WithRequire[int32](parseInt32),
+		WithMinimum[int32](0),
+		WithMaximum[int32](11),
+	)
+	if err != nil {
+		c.errorHandler(w, r, &ParsingError{Param: "month", Err: err}, nil)
+		return
+	}
+	result, err := c.service.GetIncome(r.Context(), monthParam)
+	// If an error occurred, encode the error with the status code
+	if err != nil {
+		c.errorHandler(w, r, err, &result)
+		return
+	}
+	// If no error, encode the body and the result code
+	_ = EncodeJSONResponse(result.Body, &result.Code, w)
 }
 
 // AddIncome - Add a new line of income
@@ -184,6 +217,29 @@ func (c *LedgerAPIController) DeleteIncome(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	result, err := c.service.DeleteIncome(r.Context(), monthParam, incomeIdParam)
+	// If an error occurred, encode the error with the status code
+	if err != nil {
+		c.errorHandler(w, r, err, &result)
+		return
+	}
+	// If no error, encode the body and the result code
+	_ = EncodeJSONResponse(result.Body, &result.Code, w)
+}
+
+// GetExpenses - Lists all expenses
+func (c *LedgerAPIController) GetExpenses(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	monthParam, err := parseNumericParameter[int32](
+		params["month"],
+		WithRequire[int32](parseInt32),
+		WithMinimum[int32](0),
+		WithMaximum[int32](11),
+	)
+	if err != nil {
+		c.errorHandler(w, r, &ParsingError{Param: "month", Err: err}, nil)
+		return
+	}
+	result, err := c.service.GetExpenses(r.Context(), monthParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

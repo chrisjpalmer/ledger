@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/chrisjpalmer/ledger/backend/internal/model"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
 )
@@ -63,36 +62,6 @@ func newPostgres(zl *zap.Logger, cfg Config, minConns, maxConns int32, maxConnLi
 		zl:   zl,
 		pool: pool,
 	}, nil
-}
-
-func (p *Postgres) AddIncome(ctx context.Context, income model.Income) (string, error) {
-	row := p.pool.QueryRow(ctx, `
-		INSERT INTO income (
-			amount,
-			"date",
-			"month",
-			"name",
-			"received"
-		) VALUES (
-		 	$1,
-			$2,
-			$3,
-			$4,
-			$5
-		) RETURNING id
-	`,
-		income.Amount,
-		income.Date,
-		income.Month,
-		income.Name,
-		income.Received,
-	)
-
-	var id string
-	if err := row.Scan(&id); err != nil {
-		return "", err
-	}
-	return id, nil
 }
 
 // Pool - returns the underlying pgxpool
